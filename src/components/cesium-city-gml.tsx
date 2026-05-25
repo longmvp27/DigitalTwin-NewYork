@@ -33,7 +33,6 @@ function extractBuildingInfo(feature: Cesium.Cesium3DTileFeature, position: Cesi
   const ids = feature.getPropertyIds();
   const props: Record<string, any> = {};
   ids.forEach((id) => { props[id] = get(id); });
-  console.log('ids: ', ids);
 
   const name =
     get("name") ?? get("gml:name") ?? get("id") ?? get("building_id") ?? "—";
@@ -78,7 +77,6 @@ const BuildingPopup = ({
   info: BuildingInfo;
   onClose: () => void;
 }) => {
-  console.log('info: ', info);
   const fmt = (v: number | null, decimals = 2) =>
     v !== null ? v.toFixed(decimals) : "—";
 
@@ -229,7 +227,6 @@ const CesiumCityGml = () => {
   const tilesetRef = useRef<Cesium.Cesium3DTileset | null>(null);
   const lastFeatureRef = useRef<Cesium.Cesium3DTileFeature | null>(null);
 
-  // State popup
   const [selectedBuilding, setSelectedBuilding] = useState<BuildingInfo | null>(null);
 
   useEffect(() => {
@@ -330,15 +327,17 @@ const CesiumCityGml = () => {
 
       handler.setInputAction((movement: any) => {
         const picked = viewer.scene.pick(movement.position);
-        const propertyIds = picked.getPropertyIds();
+        const propertyIds = picked?.getPropertyIds();
 
-        const properties: Record<string, any> = {};
-        propertyIds.forEach((id: any) => {
-          properties[id] = picked.getProperty(id);
-        });
+        if (propertyIds) {
+          const properties: Record<string, any> = {};
+          propertyIds.forEach((id: any) => {
+            properties[id] = picked.getProperty(id);
+          });
 
-        console.log("Property IDs:", propertyIds);
-        console.table(properties);
+          console.table(properties);
+        }
+
         // Reset màu feature cũ
         if (lastFeatureRef.current) {
           lastFeatureRef.current.color = Cesium.Color.WHITE;

@@ -11,7 +11,7 @@ import CesiumCityGml from "./cesium-city-gml";
 const Layout = () => {
   return (
     <Wrapper>
-      <Logo src="https://cdn.yoolife.com.vn/yootek/1766127433557-2360.svg" />
+      <Logo src="https://assets.yoolife.com.vn/yootek/1779695510809-1884.png" />
       <CesiumCityGml />
     </Wrapper>
   );
@@ -21,6 +21,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 `;
 
 const Logo = styled.img`
